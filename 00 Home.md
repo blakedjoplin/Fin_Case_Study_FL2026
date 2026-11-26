@@ -23,6 +23,7 @@ This is Unit 6 Question 1 ("should we undertake the project?") applied to the la
 - [[06 Deliverable Concepts]] — what we're building and the visuals for the post
 - [[07 AI Error Log]] — what AI got wrong (required section of the post)
 - [[08 LinkedIn Post Outline]] — skeleton each of us writes our own version from
+- [[09 Work Log]] — everything that happens, every session (add an entry before you push)
 
 ## Status
 - [x] Idea picked (Nov 26)
@@ -35,5 +36,5 @@ This is Unit 6 Question 1 ("should we undertake the project?") applied to the la
 
 ## Working rules
 - Each note has an `owner:` in its frontmatter. Edit your own notes; leave comments for the other person in a `> [!question]` callout instead of rewriting their work.
-- **Pull before you start, push when you stop.**
+- **Pull before you start, add a [[09 Work Log]] entry, push when you stop.**
 - Every number that ends up in a post must have a ✅ in [[04 Data Sources & Verification Log]].
