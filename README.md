@@ -1,23 +1,23 @@
 # Fin_Case_Study_FL2026
 
-Obsidian vault for our FIN 3010 (SLU, Prof. Painter) case-study AI tool and LinkedIn post.
+Code and resources for a FIN 3010 (Saint Louis University) case-study project:
+**What would AI data centers have to earn?** A break-even NPV look at the roughly
+$730B that Amazon, Alphabet, Meta and Microsoft plan to spend on capex in 2026.
 
-**Project:** *What would AI data centers have to earn?* — a break-even NPV look at Big Tech's 2026 capex. Start at `00 Home.md`.
+Project notes, logs and planning live in a separate Obsidian vault, not in this repo.
 
-## Partner setup (one time)
-1. Accept the GitHub collaborator invite (Blake adds you under repo **Settings → Collaborators**).
-2. Install [Git](https://git-scm.com/downloads) and [Obsidian](https://obsidian.md).
-3. Clone with your own GitHub login:
-   ```
-   git clone https://github.com/blakedjoplin/Fin_Case_Study_FL2026.git
-   ```
-   Keep the clone **outside** Google Drive / OneDrive / iCloud folders.
-4. In Obsidian: **Open folder as vault** → pick the cloned folder.
-5. Settings → Community plugins → Browse → install **Git** (by Vinzent) → enable. Optional: set auto-pull on startup.
+## Contents
+| Path | What |
+|---|---|
+| `model/breakeven.py` | Break-even cash flow model: scenario tables, blended server/building lives, NPV check, revenue needed |
+| `concepts/concepts-sketch.html` | Early sketches of the three deliverable concepts (open in a browser) |
+| `resources/sources.md` | Public data sources used to verify every input |
 
-## Daily workflow
-- **Pull** before you start (Git plugin: "Pull", or `git pull`).
-- Edit notes where `owner:` is you. Leave questions for the other person in a `> [!question]` callout.
-- **Commit + push** when you stop.
+## Run the model
+```
+python model/breakeven.py
+```
+No dependencies beyond Python 3.
 
-Personal Obsidian settings (`.obsidian/workspace*.json`, cache) are git-ignored so we don't overwrite each other's layouts.
+## Status
+Inputs are **draft** (from Q3 2026 earnings coverage, Oct 2026) until each is verified against the companies' own filings. This is a back-of-the-envelope model, not a forecast.

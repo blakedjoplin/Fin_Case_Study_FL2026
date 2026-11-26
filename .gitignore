@@ -13,3 +13,8 @@ desktop.ini
 # Sync-service conflict copies
 *conflicted copy*
 * (1).md
+
+# Notes live in the Obsidian vault (OneDrive), not here
+/*.md
+!/README.md
+__pycache__/

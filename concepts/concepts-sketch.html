@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI capex break-even: deliverable concept sketches</title>
+<style>
+:root{--text-primary:#0b0b0b;--text-secondary:#52514e;--text-muted:#898781;--surface-2:#fff;--bg-neutral:#f1efe8;--border:rgba(11,11,11,.1);--bg-accent:#e6f1fb;--text-accent:#185fa5;--border-accent:#378add;--radius:8px}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text-primary);background:#fafaf8;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.5}
+h1{font-size:22px;font-weight:500}
+.lbl{font-size:13px;color:var(--text-secondary)}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:var(--radius);background:var(--bg-accent);color:var(--text-accent);margin-bottom:8px}
+.row{display:grid;grid-template-columns:170px minmax(0,1fr) 64px;align-items:center;gap:10px;margin:6px 0}
+.card{background:var(--surface-2);border:.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem}
+.big{font-size:28px;font-weight:500;font-family:Georgia,serif}
+.tile{background:var(--bg-neutral);border-radius:var(--radius);padding:1rem}
+.hm td{padding:8px 6px;text-align:center;font-size:13px;border-radius:4px}
+.note{font-size:12px;color:var(--text-muted);margin-top:8px}
+</style>
+</head>
+<body>
+<h1>AI capex break-even: concept sketches</h1>
+<p class="note">Draft inputs as of Oct 2026 guidance. Not verified. Back-of-the-envelope, not a forecast.</p>
+
+<div class="card">
+<span class="tag">Concept A · tool page</span>
+<div style="font-size:15px;font-weight:500;margin-bottom:8px">The break-even dial</div>
+<div class="row"><span class="lbl">2026 capex ($B)</span><input type="range" id="cap" min="400" max="900" step="10" value="730"><span id="capO">730</span></div>
+<div class="row"><span class="lbl">Required return</span><input type="range" id="r" min="6" max="14" step="0.5" value="10"><span id="rO">10%</span></div>
+<div class="row"><span class="lbl">Server life (yrs)</span><input type="range" id="ns" min="3" max="7" step="0.5" value="5.5"><span id="nsO">5.5</span></div>
+<div class="row"><span class="lbl">Server share of capex</span><input type="range" id="s" min="0" max="100" step="5" value="60"><span id="sO">60%</span></div>
+<div class="row"><span class="lbl">EBITDA margin</span><input type="range" id="m" min="30" max="70" step="5" value="50"><span id="mO">50%</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px">
+<div class="tile"><div class="lbl">Break-even cash flow / yr</div><div id="cfO" class="big"></div></div>
+<div class="tile"><div class="lbl">New revenue needed / yr</div><div id="revO" class="big"></div></div>
+</div>
+<div class="note">Buildings fixed at 25 yrs, tax 21%.</div>
+</div>
+
+<div class="card">
+<span class="tag">Concept B · hero chart for the post</span>
+<div style="font-size:15px;font-weight:500;margin-bottom:4px">What $730B has to earn each year, by scenario</div>
+<div style="position:relative;height:240px"><canvas id="bar" role="img" aria-label="Break-even annual cash flow by scenario">4-yr at 12%: $240B; 6-yr at 10%: $168B; blended at 10%: $140B; 25-yr at 8%: $68B.</canvas></div>
+</div>
+
+<div class="card">
+<span class="tag">Concept C · secondary visual</span>
+<div style="font-size:15px;font-weight:500;margin-bottom:8px">Useful life matters more than the required return ($B per year)</div>
+<table class="hm" id="hm" style="width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed"></table>
+<div class="note">Outlined column = the 5–6 yr lives the companies book today.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const ann=(r,n)=>r/(1-Math.pow(1+r,-n));
+const $=id=>document.getElementById(id);
+function calc(){
+ const I=+$('cap').value,r=+$('r').value/100,ns=+$('ns').value,s=+$('s').value/100,m=+$('m').value/100,t=0.21;
+ $('capO').textContent=I;$('rO').textContent=$('r').value+'%';$('nsO').textContent=ns;$('sO').textContent=Math.round(s*100)+'%';$('mO').textContent=Math.round(m*100)+'%';
+ const cf=I*s*ann(r,ns)+I*(1-s)*ann(r,25);
+ const D=I*s/ns+I*(1-s)/25;
+ $('cfO').textContent='$'+Math.round(cf)+'B';
+ $('revO').textContent='$'+Math.round((cf-t*D)/(m*(1-t)))+'B';
+}
+['cap','r','ns','s','m'].forEach(id=>$(id).addEventListener('input',calc));calc();
+new Chart($('bar'),{type:'bar',data:{labels:['4-yr servers @ 12%','6-yr servers @ 10%','Blended @ 10%','25-yr buildings @ 8%'],datasets:[{data:[240,168,140,68],backgroundColor:['#b4b2a9','#2a78d6','#b4b2a9','#b4b2a9'],borderRadius:4,barThickness:24}]},
+options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw+'B per year'}}},
+scales:{x:{grid:{color:'#e1e0d9'},ticks:{callback:v=>'$'+v+'B'}},y:{grid:{display:false}}}}});
+const rs=[8,10,12],ls=[3,4,5,6,25],ramp=['#E6F1FB','#B5D4F4','#85B7EB','#378ADD'];
+const vals=rs.flatMap(r=>ls.map(l=>730*ann(r/100,l)));const mx=Math.max(...vals),mn=Math.min(...vals);
+let h='<tr><td></td>'+ls.map(l=>'<td class="lbl">'+l+' yrs</td>').join('')+'</tr>';
+rs.forEach(r=>{h+='<tr><td class="lbl">'+r+'%</td>';ls.forEach(l=>{const v=730*ann(r/100,l);const k=Math.min(3,Math.floor((v-mn)/(mx-mn+1e-9)*4));
+h+='<td style="background:'+ramp[k]+';color:'+(k>2?'#042C53':'#0C447C')+';'+((l===5||l===6)?'outline:2px solid var(--border-accent);':'')+'">'+Math.round(v)+'</td>'});h+='</tr>'});
+$('hm').innerHTML=h;
+</script>
+</body>
+</html>
