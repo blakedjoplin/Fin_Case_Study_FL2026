@@ -1,0 +1,15 @@
+# Obsidian per-user state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sync-service conflict copies
+*conflicted copy*
+* (1).md
